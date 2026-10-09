@@ -291,9 +291,11 @@ test('Gemini lab uses only synthetic scenarios with no external calls',()=>{
  assert.match(fn,/externalCall:false/);
  assert.match(fn,/DEMO-ATA-001/);
  assert.doesNotMatch(fn,/generativelanguage\.googleapis\.com/);
- assert.doesNotMatch(fn,/gemini-client/);
+ assert.match(fn,/GEMINI_REAL_DEMO_ENABLED/);
+ assert.match(fn,/gemini-client/);
  assert.match(ui,/functions\.invoke\('atlas-gemini-demo'/);
  assert.match(ui,/synthetic-demo/);
+ assert.match(ui,/gemini-real-synthetic/);
  assert.match(adapter,/gemini-2\.5-flash-lite:generateContent/);
  assert.match(adapter,/sourceId\.startsWith\('DEMO-'\)/);
  assert.match(read('app/page.tsx'),/<GeminiDemo\/>/);
