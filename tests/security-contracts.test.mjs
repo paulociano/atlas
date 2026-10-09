@@ -232,3 +232,13 @@ test('failed attachment metadata write attempts cleanup under uploader-specific 
  assert.match(sql,/split_part\(name,'\/',2\)/);
  assert.match(sql,/public\.can_edit/);
 });
+
+test('Sprint 6 versions and exact hash deduplication are server checked',()=>{
+ const sql=read('supabase/migrations/20261009_sprint6_document_versions.sql');
+ const ui=read('components/documents-panel.tsx');
+ assert.match(sql,/old_record\.workspace_id<>new\.workspace_id/);
+ assert.match(sql,/new\.version:=old_record\.version\+1/);
+ assert.match(sql,/record_attachments_one_successor/);
+ assert.match(ui,/previous_version_id:previousVersion\|\|null/);
+ assert.match(ui,/\.eq\('sha256',hash\)/);
+});
