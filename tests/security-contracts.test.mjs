@@ -201,3 +201,9 @@ test('workspace preview loading is isolated from the main page',()=>{
  assert.match(page,/useWorkspaceData\(wid\)/);
  assert.doesNotMatch(page,/async function refresh\(id:string\)/);
 });
+
+test('workspace switch ignores stale responses from prior workspace',()=>{
+ const hook=read('lib/use-workspace-data.ts');
+ assert.match(hook,/latestWorkspace\.current=workspaceId/);
+ assert.match(hook,/if\(id!==latestWorkspace\.current\)return/);
+});
