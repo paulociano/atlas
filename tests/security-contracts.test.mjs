@@ -255,3 +255,12 @@ test('Sprint 6 uploader ownership and downloaded-byte verification',()=>{
 });
 
 test('document version choices are loaded by filename from the server',()=>{const ui=read('components/documents-panel.tsx');assert.match(ui,/\.eq\('original_name',f\.name\)/);assert.match(ui,/setVersionCandidates\(data\|\|\[\]\)/);assert.match(ui,/versionCandidates\.map/);});
+
+test('read-only security gate checks RLS, definer settings and bucket privacy',()=>{
+ const sql=read('supabase/tests/readonly_security_gate.sql');
+ assert.match(sql,/tables_without_rls/);
+ assert.match(sql,/definer_search_path_missing/);
+ assert.match(sql,/anon_definer_execute/);
+ assert.match(sql,/private_bucket_public/);
+ assert.doesNotMatch(sql,/\b(?:insert\s+into|update\s+\w+\s+set|delete\s+from|drop\s+table|alter\s+table)\b/i);
+});
