@@ -76,3 +76,13 @@ test('voluntary exit protects last owner and membership scope',()=>{
  assert.match(sql,/revoke all on function public\.leave_workspace/);
  assert.match(read('components/team-panel.tsx'),/leave_workspace/);
 });
+
+test('attendance links only to workspace members without losing external participants',()=>{
+ const sql=read('supabase/migrations/20261009_attendance_profile_link.sql');
+ assert.match(sql,/participant_user_id uuid references auth\.users/);
+ assert.match(sql,/new\.participant_user_id is not null and not exists/);
+ assert.match(sql,/workspace_id=new\.workspace_id/);
+ const page=read('app/page.tsx');
+ assert.match(page,/participant_user_id:attUser\|\|null/);
+ assert.match(page,/Participante externo ou sem perfil/);
+});
