@@ -43,9 +43,9 @@ Fonte de verdade do código: este repositório. Fonte de verdade dos dados: Supa
 - [~] Dados de workspace, contagens e busca separados em três hooks; apresentação de `app/page.tsx` ainda merece divisão em componentes de tela (dívida técnica).
 
 ## Sprint 6 — Documentos e memória (P1)
-- [ ] Storage privado, política de tipos/tamanho, anexos com autoria.
-- [ ] Importação com preview, consentimento, deduplicação, origem e versionamento.
-- [ ] Modelos de registros e links de fonte estáveis.
+- [x] Bucket privado com limites de tamanho/tipo, metadados de autoria e RLS por organização; testes reais de upload e download autenticados pendentes.
+- [~] Importação manual com prévia de texto, consentimento, hash SHA-256, rejeição de duplicatas na interface e origem vinculada; versionamento evolutivo e limpeza de objetos órfãos ainda pendentes.
+- [~] Modelos anonimizados da Sprint 4 e URL de origem de anexo registrados; links estáveis e importação em lote ainda pendentes.
 
 ## Sprint 7 — ATLAS AI (P2)
 - [ ] Supabase Edge Function, secrets server-side, identidade do usuário e rate limiting.
@@ -74,3 +74,6 @@ A consulta principal de registros usa contagem exata e páginas de 30 resultados
 
 ## Encerramento funcional da Sprint 5
 Busca paginada e indicadores de contagem exata estão operacionais no código; notificações têm reconciliação e canal Realtime confirmado. Os previews de outras áreas ainda carregam até 500 registros por conveniência, com aviso claro ao usuário. Qualidade mobile/foco/movimento reduzido implementada, mas homologação em navegadores reais, autenticação multiusuário e verificação assistiva seguem sem execução em ambiente isolado. A divisão restante de `app/page.tsx` é dívida de arquitetura, não ocultada como item aprovado.
+
+## Sprint 6 — Integração
+UI em `components/documents-panel.tsx`; migration em `supabase/migrations/20261009_sprint6_private_attachments.sql`. Metadados mantêm nome, SHA-256 informado pelo navegador, autor, URL de origem e vínculo opcional ao registro. Limites: a prévia textual é parcial; hash calculado no cliente não é verificado pelo banco contra bytes armazenados; o formulário usa até 500 registros recentes no seletor; falha ao gravar metadados após upload pode deixar arquivo órfão; migrações históricas ainda requerem teste de bootstrap isolado. Não foram importados documentos reais automaticamente.
