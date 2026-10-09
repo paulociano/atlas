@@ -83,3 +83,10 @@ Consulta read-only no Supabase de produção identificou 14 tabelas públicas co
 
 ## Sprint 7 — Primeira entrega sem custos extras
 `search_atlas_sources` faz recuperação textual server-side, verifica membership antes de consultar entradas, exclui feedback legado, limita a oito fontes e 12 chamadas por minuto/usuário com bloqueio transacional. O navegador mostra fonte/ID. Não utiliza Edge Function, modelo pago, embeddings ou API externa; a Sprint 7 não deve ser marcada como totalmente concluída. A migration `20261009_owner_exit_lock.sql` serializa saídas de proprietários. Testes multiusuário e restauração sem staging pago permanecem pendentes.
+
+## 2026-10-09 | Laboratório Gemini Flash-Lite sem cobrança
+- Edge Function `atlas-gemini-demo` publicada com JWT obrigatório e autenticação via Supabase. Aceita apenas cenários `reuniao` ou `treinamento` inteiramente fictícios, retornando respostas estáticas e fontes DEMO. Não consulta tabelas de documentos, não chama serviços externos e não consome tokens Gemini.
+- Interface `components/gemini-demo.tsx` integrada à área ATLAS AI.
+- Adaptador `supabase/functions/atlas-gemini-demo/gemini-client.ts` contém a integração HTTP candidata ao Gemini 2.5 Flash-Lite, mas não é importado pelo código publicado e requer chave de API server-side para eventual ativação. Nenhuma chave foi criada/configurada e não houve uso de API paga.
+- A documentação oficial do Google alerta que modelos 2.5 podem não estar disponíveis para novos projetos. Antes de ativar será preciso validar acesso gratuito e condições de tratamento de dados; jamais enviar dados reais ao free tier sem revisão de privacidade.
+- Gates pendentes: teste autenticado real da Edge Function, verificação de quota gratuita e política de orçamento, aprovação expressa para ativação, testes E2E e conclusão da integração generativa da Sprint 7. Não classificar simulação estática como resposta de Gemini.
