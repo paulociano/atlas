@@ -242,3 +242,5 @@ test('Sprint 6 versions and exact hash deduplication are server checked',()=>{
  assert.match(ui,/previous_version_id:previousVersion\|\|null/);
  assert.match(ui,/\.eq\('sha256',hash\)/);
 });
+
+test('workspace hash uniqueness blocks concurrent duplicate document imports',()=>{assert.match(read('supabase/migrations/20261009_sprint6_unique_digest.sql'),/unique index if not exists record_attachments_unique_workspace_hash on public\.record_attachments\(workspace_id,sha256\)/i)});
