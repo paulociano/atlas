@@ -282,3 +282,19 @@ test('ATLAS retrieval uses workspace authorization, rate limiting and citations'
  assert.match(ui,/Fonte: registro/);
  assert.doesNotMatch(ui,/entries\.filter\(e=>words\.some/);
 });
+
+test('Gemini lab uses only synthetic scenarios with no external calls',()=>{
+ const fn=read('supabase/functions/atlas-gemini-demo/index.ts');
+ const ui=read('components/gemini-demo.tsx');
+ const adapter=read('supabase/functions/atlas-gemini-demo/gemini-client.ts');
+ assert.match(fn,/verify|auth\.getUser\(/);
+ assert.match(fn,/externalCall:false/);
+ assert.match(fn,/DEMO-ATA-001/);
+ assert.doesNotMatch(fn,/generativelanguage\.googleapis\.com/);
+ assert.doesNotMatch(fn,/gemini-client/);
+ assert.match(ui,/functions\.invoke\('atlas-gemini-demo'/);
+ assert.match(ui,/synthetic-demo/);
+ assert.match(adapter,/gemini-2\.5-flash-lite:generateContent/);
+ assert.match(adapter,/sourceId\.startsWith\('DEMO-'\)/);
+ assert.match(read('app/page.tsx'),/<GeminiDemo\/>/);
+});
