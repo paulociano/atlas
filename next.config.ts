@@ -1,0 +1,1 @@
+import type {NextConfig} from 'next';const nextConfig:NextConfig={output:'export',basePath:'/atlas',assetPrefix:'/atlas',trailingSlash:true};export default nextConfig;

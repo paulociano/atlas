@@ -1,13 +1,14 @@
 {
   "name": "ATLAS | Inteligência Organizacional",
   "short_name": "ATLAS",
-  "start_url": "/",
+  "start_url": "/atlas/",
+  "scope": "/atlas/",
   "display": "standalone",
   "background_color": "#f7f8fc",
   "theme_color": "#131b31",
   "icons": [
     {
-      "src": "/icon.svg",
+      "src": "/atlas/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
