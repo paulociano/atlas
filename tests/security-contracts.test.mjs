@@ -86,3 +86,5 @@ test('attendance links only to workspace members without losing external partici
  assert.match(page,/participant_user_id:attUser\|\|null/);
  assert.match(page,/Participante externo ou sem perfil/);
 });
+
+test('read-only production metadata audit covers Sprint 2 security gates',()=>{const sql=read('supabase/tests/security_metadata_audit.sql');assert.match(sql,/pg_policies/);assert.match(sql,/has_function_privilege/);assert.match(sql,/email_confirmed_at/);assert.match(sql,/column_privileges/);assert.doesNotMatch(sql,/\b(insert|update|delete|drop|alter|truncate|create)\s+(?:table|into|from|public\.)/i)});
