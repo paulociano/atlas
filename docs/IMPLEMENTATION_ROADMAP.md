@@ -32,9 +32,9 @@ Fonte de verdade do código: este repositório. Fonte de verdade dos dados: Supa
 - [x] Navegação para entidade exata de tarefas e registros a partir de auditoria/avisos, quando ainda existir e estiver carregada.
 
 ## Sprint 4 — Treinamentos, reuniões e feedbacks (P1)
-- [ ] Atas com pauta, participantes, decisões e encaminhamentos.
-- [ ] Presenças e justificativas, rituais obrigatórios, métricas de aderência.
-- [ ] Feedbacks privados por destinatário e políticas específicas de acesso.
+- [x] Atas de reuniões com pauta, decisões e encaminhamentos; participantes permanecem vinculados ao registro de presença.
+- [x] Registro de presença/falta, justificativa, opção de treinamento obrigatório e aderência calculada sobre participações registradas (não sobre todos os convocados).
+- [x] Feedbacks individuais em tabela exclusiva, com RLS de autor/destinatário e interface integrada; registros legados do tipo feedback continuam sendo registros comuns e não devem armazenar informações confidenciais.
 
 ## Sprint 5 — Pesquisa, notificações e UX (P1)
 - [ ] Busca paginada e filtrada no servidor, sem limite silencioso de 500.
@@ -65,3 +65,6 @@ A implementação funcional da Sprint 2 está entregue. Auditoria SQL read-only 
 
 ## Sprint 3 — Nota de aceite
 Entregas funcionais implantadas em código e migrations. Os contratos automatizados e o build são o gate mínimo; E2E multiusuário em homologação segue pendente devido à opção de não criar ambiente pago. Navegação profunda ocorre dentro da sessão da aplicação (não é URL compartilhável). Comentários são append-only para colaboradores com permissão de edição. Arquivamento não apaga versões ou logs.
+
+## Sprint 4 — Limites de aceite
+O registro estruturado e os controles foram implementados, mas a taxa de presença usa apenas os participantes cadastrados, não uma lista formal de convocados. A privacidade aplica-se à nova tabela private_feedback e não retroage para entradas legadas do tipo feedback. Testes multiusuário autenticados seguem não executados por ausência de homologação isolada, sem custo adicional autorizado.
