@@ -264,3 +264,21 @@ test('read-only security gate checks RLS, definer settings and bucket privacy',(
  assert.match(sql,/private_bucket_public/);
  assert.doesNotMatch(sql,/\b(?:insert\s+into|update\s+\w+\s+set|delete\s+from|drop\s+table|alter\s+table)\b/i);
 });
+
+test('Owner departure locks workspace to prevent simultaneous last-owner exits',()=>{
+ const sql=read('supabase/migrations/20261009_owner_exit_lock.sql');
+ assert.match(sql,/from public\.workspaces where id=target_workspace for update/);
+ assert.match(sql,/other_owners=0/);
+});
+test('ATLAS retrieval uses workspace authorization, rate limiting and citations',()=>{
+ const sql=read('supabase/migrations/20261009_sprint7_source_retrieval.sql');
+ const ui=read('app/page.tsx');
+ assert.match(sql,/m\.workspace_id=target_workspace and m\.user_id=uid/);
+ assert.match(sql,/pg_advisory_xact_lock/);
+ assert.match(sql,/>=12/);
+ assert.match(sql,/e\.kind<>'feedback'/);
+ assert.match(sql,/limit 8/);
+ assert.match(ui,/rpc\('search_atlas_sources'/);
+ assert.match(ui,/Fonte: registro/);
+ assert.doesNotMatch(ui,/entries\.filter\(e=>words\.some/);
+});
