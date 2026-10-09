@@ -191,3 +191,13 @@ test('limited overview is explicitly disclosed when count exceeds preview',()=>{
  assert.match(page,/workspaceCounts\.records>entries\.length/);
  assert.match(page,/Consulte Base de conhecimento/);
 });
+
+test('workspace preview loading is isolated from the main page',()=>{
+ const hook=read('lib/use-workspace-data.ts');
+ const page=read('app/page.tsx');
+ assert.match(hook,/useCallback/);
+ assert.match(hook,/\.limit\(500\)/);
+ assert.match(hook,/Promise\.all/);
+ assert.match(page,/useWorkspaceData\(wid\)/);
+ assert.doesNotMatch(page,/async function refresh\(id:string\)/);
+});
