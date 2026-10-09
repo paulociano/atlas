@@ -1,0 +1,18 @@
+'use client';
+import {useEffect,useMemo,useState} from 'react';
+import {supabase} from '../lib/supabase';
+type Event={id:number;entity:string;entity_id:string;operation:string;actor:string|null;changed_at:string;payload:{title?:string;participant_name?:string;kind?:string}|null};
+type Profile={user_id:string;full_name:string};
+const entityLabels:Record<string,string>={entries:'Registro',tasks:'Ação',attendance:'Presença'};
+const operationLabels:Record<string,string>={INSERT:'Criado',UPDATE:'Atualizado',DELETE:'Excluído'};
+export default function AuditPanel({workspaceId}:{workspaceId:string}){
+ const [events,setEvents]=useState<Event[]>([]),[profiles,setProfiles]=useState<Profile[]>([]),[loading,setLoading]=useState(false),[error,setError]=useState(''),[kind,setKind]=useState('todos');
+ useEffect(()=>{if(!supabase||!workspaceId){setEvents([]);return;}let active=true;setLoading(true);setEvents([]);setError('');
+ (async()=>{const {data,error}=await supabase!.from('audit_events').select('id,entity,entity_id,operation,actor,changed_at,payload').eq('workspace_id',workspaceId).order('changed_at',{ascending:false}).limit(200);if(!active)return;if(error){setError(error.message);setLoading(false);return;}const rows=(data||[]) as Event[];setEvents(rows);const ids=[...new Set(rows.map(x=>x.actor).filter((id):id is string=>Boolean(id)))];if(ids.length){const profilesResult=await supabase!.from('profiles').select('user_id,full_name').in('user_id',ids);if(active)setProfiles((profilesResult.data||[]) as Profile[])}setLoading(false)})();return()=>{active=false}},[workspaceId]);
+ const shown=useMemo(()=>events.filter(e=>kind==='todos'||e.entity===kind),[events,kind]);
+ return <div><div className="page-heading"><div><div className="eyebrow">TRANSPARÊNCIA OPERACIONAL</div><h1>Trilha de auditoria</h1><p>Histórico de alterações no workspace, respeitando as permissões do banco.</p></div></div>
+ <div className="audit-toolbar"><label htmlFor="audit-kind">Tipo de atividade</label><select id="audit-kind" value={kind} onChange={e=>setKind(e.target.value)}><option value="todos">Todas</option><option value="entries">Registros</option><option value="tasks">Ações</option><option value="attendance">Presenças</option></select></div>
+ <section className="panel list-panel" aria-busy={loading}>{loading&&<p className="muted pad">Carregando histórico...</p>}{error&&<p className="error pad" role="alert">{error}</p>}{!loading&&!error&&shown.length===0&&<p className="muted pad">Nenhuma atividade registrada neste filtro.</p>}
+ {shown.map(event=><article className="audit-event" key={event.id}><div className="audit-event-title"><strong>{operationLabels[event.operation]||event.operation} · {entityLabels[event.entity]||event.entity}</strong><time dateTime={event.changed_at}>{new Date(event.changed_at).toLocaleString('pt-BR')}</time></div><p>{event.payload?.title||event.payload?.participant_name||'Registro '+event.entity_id.slice(0,8)}</p><small>Responsável: {profiles.find(p=>p.user_id===event.actor)?.full_name||(event.actor?'Usuário '+event.actor.slice(0,8):'Sistema')}</small></article>)}</section>
+ <p className="muted hint">Exibimos os últimos 200 eventos autorizados. O conteúdo integral dos logs não é exposto na interface.</p></div>
+}
