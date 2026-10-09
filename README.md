@@ -20,3 +20,6 @@ GitHub Pages hospeda apenas arquivos estáticos, não funções Next.js/API. A b
 
 ### Desenvolvimento
 `npm install && npm run dev`. Testes: `npm run lint && npm test && npm run build`. Não envie dados pessoais para o repositório público.
+
+## Release de governança
+Migração aplicada no Supabase: tabelas `invites`, `entry_versions` e RPCs `create_invite`, `accept_invite`, `approve_entry`. Interface administrativa em evolução.
