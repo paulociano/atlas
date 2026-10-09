@@ -20,3 +20,14 @@
 .pending-tabs{display:flex;gap:8px;margin:20px 0}.pending-tabs button{padding:9px 16px;border-radius:9px;background:#eef0f7;color:#56617e;border:0;cursor:pointer}.pending-tabs button.active{background:#e8e4ff;color:#5848cc}.audit-event .secondary{margin-top:12px}
 
 .notification-bell{position:relative;display:grid;place-items:center;border:0;background:transparent;color:#64718d;width:38px;height:38px;border-radius:12px;cursor:pointer;transition:background .18s,color .18s}.notification-bell:hover,.notification-bell:focus-visible{background:#f2f0ff;color:#6454d9;outline-offset:2px}.notification-count{position:absolute;top:-3px;right:-5px;min-width:18px;height:18px;padding:0 4px;border-radius:12px;background:#e34a65;color:white;font-size:10px;font-weight:800;line-height:18px;text-align:center;box-shadow:0 0 0 2px white;font-variant-numeric:tabular-nums}
+
+/* Sprint 5: mobile-first forms, visible focus, reduced motion. */
+@media(max-width:760px){
+ .task-entry,.attendance-form .inline{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px}
+ .task-entry input,.task-entry select,.task-entry button,.attendance-form .inline input,.attendance-form .inline select{min-width:0;width:100%;max-width:100%}
+ .list-panel .task{flex-wrap:wrap;gap:10px;overflow-wrap:anywhere}
+ .list-panel .task small{flex-basis:100%}
+ .list-panel .record{overflow-wrap:anywhere}
+}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid #8070ed;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
