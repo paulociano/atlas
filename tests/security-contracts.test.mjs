@@ -56,3 +56,13 @@ test('owner-only team management forbids self changes and owner demotion',()=>{
 });
 
 test('invites bind recipients and support revocation',()=>{const sql=read('supabase/migrations/20261009_email_bound_invites.sql');assert.match(sql,/inv\.invited_email is distinct from current_email/);assert.match(sql,/revoked_at is null/);assert.match(sql,/revoke all on function public\.create_invite/);assert.match(sql,/function public\.revoke_invite/);const ui=read('components/team-panel.tsx');assert.match(ui,/create_email_invite/);assert.match(ui,/revoke_invite/);});
+
+test('targeted invites require confirmed email and notifications require active membership',()=>{
+ const sql=read('supabase/migrations/20261009_verified_invites_membership_rls.sql');
+ assert.match(sql,/email_confirmed_at/);
+ assert.match(sql,/inv\.invited_email is distinct from current_email/);
+ assert.match(sql,/verified_at is null/);
+ assert.match(sql,/public\.has_membership\(workspace_id\)/);
+ assert.match(sql,/notifications_read/);
+ assert.match(sql,/notifications_update/);
+});
