@@ -21,7 +21,7 @@ begin
  if (select count(*) from public.atlas_query_events q where q.user_id=uid and q.created_at>now()-interval '1 minute')>=12 then raise exception 'Limite de consultas atingido. Tente novamente em um minuto';end if;
  insert into public.atlas_query_events(user_id,workspace_id) values(uid,target_workspace);
  return query select e.id,e.title,e.kind,left(e.body,600),e.occurred_at
- from public.entries e where e.workspace_id=target_workspace
+ from public.entries e where e.workspace_id=target_workspace and e.kind<>'feedback'
  and (e.title ilike '%'||term||'%' or e.body ilike '%'||term||'%')
  order by e.occurred_at desc,e.id desc limit 8;
 end $fn$;
