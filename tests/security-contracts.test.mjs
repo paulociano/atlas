@@ -244,3 +244,12 @@ test('Sprint 6 versions and exact hash deduplication are server checked',()=>{
 });
 
 test('workspace hash uniqueness blocks concurrent duplicate document imports',()=>{assert.match(read('supabase/migrations/20261009_sprint6_unique_digest.sql'),/unique index if not exists record_attachments_unique_workspace_hash on public\.record_attachments\(workspace_id,sha256\)/i)});
+
+test('Sprint 6 uploader ownership and downloaded-byte verification',()=>{
+ const sql=read('supabase/migrations/20261009_sprint6_storage_ownership.sql');
+ const ui=read('components/documents-panel.tsx');
+ assert.match(sql,/o\.owner_id=new\.uploaded_by::text/);
+ assert.match(sql,/split_part\(name,'\/',2\)=\(select auth\.uid\(\)\)::text/);
+ assert.match(ui,/\.download\(path\)/);
+ assert.match(ui,/verified!==hash/);
+});
