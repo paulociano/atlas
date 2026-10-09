@@ -223,3 +223,12 @@ test('Sprint 6 private storage, read-only metadata, preview and consent',()=>{
  assert.match(ui,/\.upload\(/);
  assert.match(read('app/page.tsx'),/DocumentsPanel workspaceId=/);
 });
+
+test('failed attachment metadata write attempts cleanup under uploader-specific path',()=>{
+ const ui=read('components/documents-panel.tsx');
+ const sql=read('supabase/migrations/20261009_sprint6_storage_cleanup.sql');
+ assert.match(ui,/workspaceId\+'\/'\+userId/);
+ assert.match(ui,/remove\(\[path\]\)/);
+ assert.match(sql,/split_part\(name,'\/',2\)/);
+ assert.match(sql,/public\.can_edit/);
+});
