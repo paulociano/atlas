@@ -48,9 +48,9 @@ Fonte de verdade do código: este repositório. Fonte de verdade dos dados: Supa
 - [~] Modelos anonimizados da Sprint 4 e URL de origem de anexo registrados; links estáveis e importação em lote ainda pendentes.
 
 ## Sprint 7 — ATLAS AI (P2)
-- [ ] Supabase Edge Function, secrets server-side, identidade do usuário e rate limiting.
-- [ ] Recuperação respeitando RLS, fontes verificáveis e avaliação de respostas.
-- [ ] Logs mínimos, política de retenção e custos por organização.
+- [~] RPC protegida no Supabase para recuperação sem provedor externo: identidade verificada, workspace validado e limite de 12 consultas/minuto por usuário. Edge Function e secrets de IA generativa não configurados por restrição de custos.
+- [~] Recuperação autorizada por workspace com 8 fontes identificáveis, sem feedbacks legados. Avaliação de relevância e citações clicáveis seguem pendentes.
+- [~] Eventos mínimos de consulta sem armazenar perguntas ou respostas; retenção automática, alertas e custos por organização pendentes.
 
 ## Sprint 8 — Gestão e operação (P2)
 - [ ] Dashboards de execução, treinamentos e qualidade de conhecimento.
@@ -80,3 +80,6 @@ UI em `components/documents-panel.tsx`; migration em `supabase/migrations/202610
 
 ## 2026-10-09 | Gate gratuito de metadados de segurança
 Consulta read-only no Supabase de produção identificou 14 tabelas públicas com RLS ativo e 24 funções SECURITY DEFINER com search_path explícito e sem EXECUTE anônimo. Verificações de violations retornaram zero nos três controles. SQL reproduzível em `supabase/tests/readonly_security_gate.sql`. Isso não prova isolamento multiusuário nem substitui auditoria do corpo das funções, restauração ou E2E autenticado. Nenhum recurso pago criado.
+
+## Sprint 7 — Primeira entrega sem custos extras
+`search_atlas_sources` faz recuperação textual server-side, verifica membership antes de consultar entradas, exclui feedback legado, limita a oito fontes e 12 chamadas por minuto/usuário com bloqueio transacional. O navegador mostra fonte/ID. Não utiliza Edge Function, modelo pago, embeddings ou API externa; a Sprint 7 não deve ser marcada como totalmente concluída. A migration `20261009_owner_exit_lock.sql` serializa saídas de proprietários. Testes multiusuário e restauração sem staging pago permanecem pendentes.
