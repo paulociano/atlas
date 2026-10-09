@@ -149,3 +149,18 @@ test('Drive-inspired ritual examples are anonymized and read-only',()=>{
  assert.doesNotMatch(ui,/supabase\.from\(|\.insert\(/);
  assert.match(read('components/rituals-panel.tsx'),/<RecordExamples\/>/);
 });
+
+test('Sprint 5 records use server filtering and paginated loading',()=>{
+ const page=read('app/page.tsx');
+ assert.match(page,/\.range\(searchPage\*30,searchPage\*30\+29\)/);
+ assert.match(page,/count:'exact'/);
+ assert.match(page,/searchLoading/);
+ assert.match(page,/searchError/);
+ assert.match(page,/setSearchPage/);
+});
+test('Sprint 5 notifications revalidate on focus with realtime fallback',()=>{
+ const notices=read('components/notifications-panel.tsx');
+ assert.match(notices,/addEventListener\('focus'/);
+ assert.match(notices,/postgres_changes/);
+ assert.match(notices,/removeChannel/);
+});
