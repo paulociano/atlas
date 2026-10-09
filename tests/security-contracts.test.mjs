@@ -66,3 +66,13 @@ test('targeted invites require confirmed email and notifications require active 
  assert.match(sql,/notifications_read/);
  assert.match(sql,/notifications_update/);
 });
+
+test('voluntary exit protects last owner and membership scope',()=>{
+ const sql=read('supabase/migrations/20261009_voluntary_workspace_exit.sql');
+ assert.match(sql,/user_id=\(select auth\.uid\(\)\)/);
+ assert.match(sql,/current_role='owner'/);
+ assert.match(sql,/other_owners=0/);
+ assert.match(sql,/delete from public\.memberships/);
+ assert.match(sql,/revoke all on function public\.leave_workspace/);
+ assert.match(read('components/team-panel.tsx'),/leave_workspace/);
+});
