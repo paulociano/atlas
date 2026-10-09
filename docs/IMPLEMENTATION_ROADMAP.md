@@ -26,8 +26,8 @@ Fonte de verdade do código: este repositório. Fonte de verdade dos dados: Supa
 - [ ] Testes E2E reais de identidade, primeira organização e permissões em homologação separada (dependência para homologar a Sprint 2).
 
 ## Sprint 3 — Decisões e execução (P1)
-- [ ] Relacionar tarefa ↔ decisão ↔ reunião com FKs e links profundos.
-- [ ] Responsável, prioridade, status granular, revisão e comentários em tarefas.
+- [~] Tarefas agora vinculam opcionalmente a decisão ou reunião por FK com validação do workspace; links profundos ainda pendentes.
+- [~] Responsável e prioridade implementados; status granular, revisão e comentários ainda pendentes.
 - [ ] Aprovação/versionamento completos, gestão de vigência e política de arquivamento.
 - [ ] Abrir entidade exata na auditoria e nos avisos.
 
@@ -59,3 +59,6 @@ Fonte de verdade do código: este repositório. Fonte de verdade dos dados: Supa
 
 ## Definição de pronto
 Mudança integrada ao GitHub, migration aplicada quando necessária, testes adequados ao risco, execução de CI e deploy verificados. Não confundir build verde com autorização ou jornada E2E comprovada.
+
+## Status de homologação sem custos adicionais
+A implementação funcional da Sprint 2 está entregue. Auditoria SQL read-only de cinco controles foi aprovada no Supabase ativo. Testes E2E autenticados com contas independentes e ambiente isolado seguem pendentes por decisão de não provisionar branch paga. Não tratar a Sprint 2 como homologada até concluir esse gate.
