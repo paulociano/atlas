@@ -185,3 +185,9 @@ test('dashboard counts use exact database counts instead of 500-entry preview',(
  assert.match(page,/workspaceCounts\?\.records/);
  assert.match(page,/workspaceCounts\?\.openTasks/);
 });
+
+test('limited overview is explicitly disclosed when count exceeds preview',()=>{
+ const page=read('app/page.tsx');
+ assert.match(page,/workspaceCounts\.records>entries\.length/);
+ assert.match(page,/Consulte Base de conhecimento/);
+});
