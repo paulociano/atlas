@@ -54,3 +54,5 @@ test('owner-only team management forbids self changes and owner demotion',()=>{
  assert.match(sql,/new_role in \('admin','editor','viewer'\)/);
  assert.match(sql,/revoke all on function public\.manage_workspace_member/);
 });
+
+test('invites bind recipients and support revocation',()=>{const sql=read('supabase/migrations/20261009_email_bound_invites.sql');assert.match(sql,/inv\.invited_email is distinct from current_email/);assert.match(sql,/revoked_at is null/);assert.match(sql,/revoke all on function public\.create_invite/);assert.match(sql,/function public\.revoke_invite/);const ui=read('components/team-panel.tsx');assert.match(ui,/create_email_invite/);assert.match(ui,/revoke_invite/);});
