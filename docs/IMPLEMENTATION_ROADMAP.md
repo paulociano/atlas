@@ -40,7 +40,7 @@ Fonte de verdade do código: este repositório. Fonte de verdade dos dados: Supa
 - [~] Listagem principal de registros com filtros e paginação no servidor (30 por página); resumos, relações e outros módulos ainda utilizam carga local limitada de até 500 entradas.
 - [~] Painel de notificações atualiza em foco e tenta assinar eventos Realtime; reconciliação de permissões existe no RPC e a publicação Realtime da tabela notifications foi habilitada e verificada.
 - [~] Estados de carregamento/erro adicionados à busca, layout mobile/foco e movimento reduzido aprimorados; auditoria E2E de acessibilidade e qualidade web.
-- [ ] Quebrar app/page.tsx em módulos com state e data access dedicados.
+- [~] Busca paginada extraída para hook dedicado (`lib/use-workspace-record-search.ts`), enquanto a maior parte de `app/page.tsx` ainda concentra estado e fluxos.
 
 ## Sprint 6 — Documentos e memória (P1)
 - [ ] Storage privado, política de tipos/tamanho, anexos com autoria.
