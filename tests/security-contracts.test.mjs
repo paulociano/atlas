@@ -43,3 +43,5 @@ test('notification reconciliation removes approvals when admin rights are revoke
  assert.match(sql,/n\.user_id=\(select auth\.uid\(\)\)/i);
  assert.match(sql,/e\.workspace_id=target_workspace/i);
 });
+
+test('SQL isolation rehearsal is guarded and rollback-only',()=>{const sql=read('supabase/tests/rls_isolation.sql');assert.match(sql,/atlas\.allow_isolation_test/);assert.match(sql,/set local role authenticated/);assert.match(sql,/request\.jwt\.claim\.sub/);assert.match(sql,/cross-workspace/);assert.match(sql,/rollback;\s*$/i)});
