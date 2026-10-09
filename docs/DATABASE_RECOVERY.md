@@ -30,3 +30,8 @@ A fonte de verdade do esquema versionado é `supabase/schema.sql`, seguida das m
 
 ## Pendência explícita
 Esta rodada registrou baselines e testes estáticos, mas **não executou** uma reconstrução isolada nem a matriz E2E autenticada. A conclusão da Sprint 1 depende desses testes, inclusive para triggers de criação e para permissões reais.
+
+## Teste automatizável de isolamento em homologação
+O arquivo `supabase/tests/rls_isolation.sql` cria usuários/organizações sintéticos, troca o papel para `authenticated`, simula JWTs e verifica leitura entre organizações e edição por papel. Ele exige a variável de sessão `atlas.allow_isolation_test=true` e encerra com `ROLLBACK`.
+
+**Nunca execute no banco de produção.** Em um banco descartável, abra o `psql`, execute `SET atlas.allow_isolation_test='true';` e então `\\i supabase/tests/rls_isolation.sql`. A simulação direta de JWT é um teste de banco, não substitui login real via GoTrue e os testes E2E de convites/cadastro.
