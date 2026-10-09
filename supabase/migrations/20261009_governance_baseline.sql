@@ -46,7 +46,8 @@ begin
  insert into public.entry_versions(entry_id,workspace_id,revision,title,body,status,changed_by) values(new.id,new.workspace_id,n,new.title,new.body,new.status,auth.uid());
  return new;
 end $fn$;
-create trigger entry_version_capture after insert or update on public.entries for each row execute function public.capture_entry_version();
+create trigger entry_version_insert after insert on public.entries for each row execute function public.capture_entry_version();
+create trigger entry_version_update after update of title,body,status on public.entries for each row execute function public.capture_entry_version();
 create or replace function public.audit_change() returns trigger language plpgsql security definer set search_path='' as $fn$
 begin
  if tg_op='DELETE' then insert into public.audit_events(workspace_id,entity,entity_id,operation,actor,payload) values(old.workspace_id,tg_table_name,old.id,tg_op,auth.uid(),to_jsonb(old));return old;
