@@ -25,3 +25,9 @@ test('audit, notifications, team, and approval flows stay wired into navigation'
   assert.match(page,new RegExp('<'+module+'\\b'));
  }
 });
+
+test('reproducible migration files cover governance, profiles and notifications',()=>{
+ for(const path of ['supabase/migrations/20261009_full_name_profiles.sql','supabase/migrations/20261009_governance_baseline.sql','supabase/migrations/20261009_notifications_baseline.sql','supabase/migrations/20261009_profile_self_service.sql','supabase/migrations/20261009_notifications_hardening.sql']) assert.ok(Boolean(read(path)),path);
+ assert.match(read('supabase/migrations/20261009_governance_baseline.sql'),/create function public.accept_invite/);
+ assert.match(read('supabase/migrations/20261009_notifications_baseline.sql'),/create policy notifications_read/);
+});
