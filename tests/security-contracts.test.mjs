@@ -100,3 +100,18 @@ test('Sprint 3 tasks validate source and assignee within same workspace',()=>{
  assert.match(page,/assignee_user_id:taskAssignee\|\|null/);
  assert.match(page,/priority:taskPriority/);
 });
+
+test('Sprint 3 status, comments, and archival have workspace authorization',()=>{
+ const sql=read('supabase/migrations/20261009_sprint3_status_comments.sql');
+ assert.match(sql,/status in \('pendente','em_andamento','bloqueada','concluida','cancelada'\)/);
+ assert.match(sql,/public\.has_membership\(workspace_id\)/);
+ assert.match(sql,/public\.can_edit\(workspace_id\)/);
+ assert.match(sql,/t\.workspace_id=task_comments\.workspace_id/);
+ const archive=read('supabase/migrations/20261009_sprint3_archive_entry.sql');
+ assert.match(archive,/role in \('owner','admin'\)/);
+ assert.match(archive,/current_status<>'vigente'/);
+ const ui=read('app/page.tsx');
+ assert.match(ui,/TaskComments taskId=/);
+ assert.match(ui,/archive_entry/);
+ assert.match(ui,/scrollIntoView/);
+});
