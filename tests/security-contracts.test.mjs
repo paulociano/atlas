@@ -164,3 +164,14 @@ test('Sprint 5 notifications revalidate on focus with realtime fallback',()=>{
  assert.match(notices,/postgres_changes/);
  assert.match(notices,/removeChannel/);
 });
+
+test('Sprint 5 accessibility and live unread badge',()=>{
+ const css=read('app/globals.css');
+ const page=read('app/page.tsx');
+ assert.match(css,/:focus-visible/);
+ assert.match(css,/prefers-reduced-motion/);
+ assert.match(css,/@media\(max-width:760px\)/);
+ assert.match(page,/atlas-badge-/);
+ assert.match(page,/window\.addEventListener\('focus',onFocus\)/);
+ assert.match(read('supabase/migrations/20261009_sprint5_notifications_realtime.sql'),/alter publication supabase_realtime add table public\.notifications/);
+});
