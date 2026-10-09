@@ -1,5 +1,5 @@
 'use client';
-import {useCallback,useEffect,useState} from 'react';
+import {useCallback,useEffect,useRef,useState} from 'react';
 import {supabase} from './supabase';
 import type {Entry} from './types';
 export type WorkspaceTask={id:string;title:string;done:boolean;due_at:string|null;source_entry_id:string|null;assignee_user_id:string|null;priority:string;status:string};
@@ -9,6 +9,7 @@ export function useWorkspaceData(workspaceId:string){
  const [tasks,setTasks]=useState<WorkspaceTask[]>([]);
  const [attendance,setAttendance]=useState<WorkspaceAttendance[]>([]);
  const [loadError,setLoadError]=useState('');
+ const latestWorkspace=useRef(workspaceId);latestWorkspace.current=workspaceId;
  const refresh=useCallback(async(id:string)=>{
   setEntries([]);setTasks([]);setAttendance([]);setLoadError('');
   if(!supabase||!id)return;
@@ -17,6 +18,7 @@ export function useWorkspaceData(workspaceId:string){
    supabase.from('tasks').select('id,title,done,due_at,source_entry_id,assignee_user_id,priority,status').eq('workspace_id',id).order('created_at',{ascending:false}),
    supabase.from('attendance').select('id,participant_name,present,entry_id').eq('workspace_id',id)
   ]);
+  if(id!==latestWorkspace.current)return;
   if(e.error||t.error||a.error)setLoadError(e.error?.message||t.error?.message||a.error?.message||'');
   setEntries((e.data||[]) as Entry[]);
   setTasks((t.data||[]) as WorkspaceTask[]);
