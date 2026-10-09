@@ -1,0 +1,10 @@
+'use client';
+import {useEffect,useState} from 'react';
+import {supabase} from '../lib/supabase';
+type Comment={id:string;body:string;created_at:string;author_id:string};
+export default function TaskComments({taskId,workspaceId,userId,canEdit}:{taskId:string;workspaceId:string;userId:string;canEdit:boolean}){
+ const [comments,setComments]=useState<Comment[]>([]),[body,setBody]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState(''),[open,setOpen]=useState(false);
+ useEffect(()=>{if(!open||!supabase)return;let active=true;supabase.from('task_comments').select('id,body,created_at,author_id').eq('workspace_id',workspaceId).eq('task_id',taskId).order('created_at',{ascending:true}).then(({data,error})=>{if(!active)return;if(error)setError(error.message);else setComments(data||[])});return()=>{active=false}},[taskId,workspaceId,open]);
+ async function submit(){if(!supabase||!body.trim()||busy)return;setBusy(true);setError('');const {error}=await supabase.from('task_comments').insert({workspace_id:workspaceId,task_id:taskId,author_id:userId,body:body.trim()});if(error)setError(error.message);else{setBody('');const r=await supabase.from('task_comments').select('id,body,created_at,author_id').eq('workspace_id',workspaceId).eq('task_id',taskId).order('created_at',{ascending:true});if(r.error)setError(r.error.message);else setComments(r.data||[])}setBusy(false)}
+ return <div><button className="secondary" type="button" onClick={()=>setOpen(!open)}>{open?'Ocultar comentários':'Comentários'}</button>{open&&<div className="attendance-form">{comments.map(c=><p key={c.id}><small>{new Date(c.created_at).toLocaleString('pt-BR')}</small> · {c.body}</p>)}{comments.length===0&&<p className="muted">Nenhum comentário.</p>}{canEdit&&<div className="inline"><input aria-label="Novo comentário" maxLength={2000} placeholder="Atualização da ação..." value={body} onChange={e=>setBody(e.target.value)}/><button className="primary" disabled={busy||!body.trim()} onClick={()=>void submit()}>Comentar</button></div>}{error&&<p role="alert" className="error">{error}</p>}</div>}</div>
+}
