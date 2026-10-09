@@ -13,8 +13,8 @@ Fonte de verdade do código: este repositório. Fonte de verdade dos dados: Supa
 - [x] Restringir UPDATE de notificações ao campo read_at.
 - [x] Versionar essa alteração e adicionar testes de contratos básicos.
 - [ ] Reconciliar o esquema completo do banco com migrations reexecutáveis num banco novo.
-- [ ] Revisar SECURITY DEFINER, grants e search_path em todas as RPCs.
-- [ ] Configurar teste de RLS por papéis (owner/admin/editor/viewer) e entre workspaces.
+- [~] Auditoria read-only de metadados das 24 funções SECURITY DEFINER: search_path explícito e sem EXECUTE ao papel anon; revisão interna de autorização por função continua pendente.
+- [~] Auditoria read-only confirmou RLS em 14 tabelas públicas. Os testes reais por papel e entre organizações em ambiente isolado continuam pendentes.
 - [ ] Estabelecer backups, procedimento de restauração e ambiente de homologação.
 - [ ] Ativar proteção contra senhas vazadas; testar signup, OTP, login, redefinição e convite.
 **Aceite:** bootstrap reproduzível, isolamento comprovado, recuperação ensaiada.
@@ -77,3 +77,6 @@ Busca paginada e indicadores de contagem exata estão operacionais no código; n
 
 ## Sprint 6 — Integração
 UI em `components/documents-panel.tsx`; migration em `supabase/migrations/20261009_sprint6_private_attachments.sql`. Metadados mantêm nome, SHA-256 informado pelo navegador, autor, URL de origem e vínculo opcional ao registro. Limites: a prévia textual é parcial; hash calculado no cliente não é verificado pelo banco contra bytes armazenados; o formulário usa até 500 registros recentes no seletor; falha ao gravar metadados após upload pode deixar arquivo órfão; migrações históricas ainda requerem teste de bootstrap isolado. Não foram importados documentos reais automaticamente.
+
+## 2026-10-09 | Gate gratuito de metadados de segurança
+Consulta read-only no Supabase de produção identificou 14 tabelas públicas com RLS ativo e 24 funções SECURITY DEFINER com search_path explícito e sem EXECUTE anônimo. Verificações de violations retornaram zero nos três controles. SQL reproduzível em `supabase/tests/readonly_security_gate.sql`. Isso não prova isolamento multiusuário nem substitui auditoria do corpo das funções, restauração ou E2E autenticado. Nenhum recurso pago criado.
