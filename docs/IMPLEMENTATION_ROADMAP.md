@@ -20,10 +20,10 @@ Fonte de verdade do código: este repositório. Fonte de verdade dos dados: Supa
 **Aceite:** bootstrap reproduzível, isolamento comprovado, recuperação ensaiada.
 
 ## Sprint 2 — Identidade e colaboração (P0/P1)
-- [ ] Convites vinculados a e-mail, revogação e expiração com auditoria.
-- [ ] Gestão de integrantes por owner/admin e ações de saída/desativação.
-- [ ] Identidade de participantes vinculada a perfis, com política de privacidade.
-- [ ] Testes E2E de identidade, primeira organização e permissões.
+- [x] Convites vinculados a e-mail verificado, revogação, expiração e listagem administrativa (aceite e revogação rastreáveis pelo estado no banco; auditoria formal de convites pendente).
+- [x] Gestão de integrantes pelo proprietário, mudança de papéis, remoção e saída voluntária, protegendo o último proprietário (admin não administra membros).
+- [x] Vínculo opcional entre presença de treinamento e perfil do integrante com isolamento por workspace; política de privacidade e retenção organizacional ainda pendentes.
+- [ ] Testes E2E reais de identidade, primeira organização e permissões em homologação separada (dependência para homologar a Sprint 2).
 
 ## Sprint 3 — Decisões e execução (P1)
 - [ ] Relacionar tarefa ↔ decisão ↔ reunião com FKs e links profundos.
