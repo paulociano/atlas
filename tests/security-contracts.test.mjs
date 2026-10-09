@@ -45,3 +45,12 @@ test('notification reconciliation removes approvals when admin rights are revoke
 });
 
 test('SQL isolation rehearsal is guarded and rollback-only',()=>{const sql=read('supabase/tests/rls_isolation.sql');assert.match(sql,/atlas\.allow_isolation_test/);assert.match(sql,/set local role authenticated/);assert.match(sql,/request\.jwt\.claim\.sub/);assert.match(sql,/cross-workspace/);assert.match(sql,/rollback;\s*$/i)});
+
+test('owner-only team management forbids self changes and owner demotion',()=>{
+ const sql=read('supabase/migrations/20261009_safe_member_administration.sql');
+ assert.match(sql,/role='owner'/);
+ assert.match(sql,/target_user=\(select auth\.uid\(\)\)/);
+ assert.match(sql,/existing_role='owner'/);
+ assert.match(sql,/new_role in \('admin','editor','viewer'\)/);
+ assert.match(sql,/revoke all on function public\.manage_workspace_member/);
+});
