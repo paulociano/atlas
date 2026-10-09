@@ -14,3 +14,6 @@ Limites: não houve importação automática do Drive nem testes autenticados E2
 
 ## Incremento: versionamento e deduplicação
 A migration `supabase/migrations/20261009_sprint6_document_versions.sql` vincula `previous_version_id` ao predecessor no mesmo workspace e com o mesmo nome, incrementa a versão no banco e impede bifurcação de sucessores. Na UI, o usuário escolhe um documento anterior com o mesmo nome ao importar uma revisão. A verificação de SHA-256 consulta todo o workspace no servidor, não apenas a lista local de 100 arquivos. O hash ainda é calculado no navegador; uma verificação independente de bytes armazenados exigirá serviço confiável de backend. O aceite E2E multiusuário continua pendente.
+
+## 2026-10-09: seleção de versões
+O seletor consulta diretamente `record_attachments` por nome do arquivo e organização, independentemente dos 100 itens recentes da tela. Ainda falta verificação independente do conteúdo armazenado, E2E com dois usuários/workspaces e ensaio de restauração/bootstrap de migrations. O upload em produção não foi testado com arquivos reais nesta execução.
