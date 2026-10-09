@@ -115,3 +115,16 @@ test('Sprint 3 status, comments, and archival have workspace authorization',()=>
  assert.match(ui,/archive_entry/);
  assert.match(ui,/scrollIntoView/);
 });
+
+test('Sprint 4 private feedback, meeting minutes and attendance contracts',()=>{
+ const sql=read('supabase/migrations/20261009_sprint4_meetings_training_feedback.sql');
+ assert.match(sql,/private_feedback_read/);
+ assert.match(sql,/recipient_id=\(select auth\.uid\(\)\) or author_id=\(select auth\.uid\(\)\)/);
+ assert.match(sql,/e\.workspace_id=new\.workspace_id/);
+ assert.match(sql,/m\.workspace_id=new\.workspace_id/);
+ assert.match(sql,/absence_reason/);
+ assert.match(sql,/mandatory_training/);
+ const ui=read('components/rituals-panel.tsx');
+ for(const action of ['meeting_minutes','private_feedback','attendance','mandatory_training']) assert.match(ui,new RegExp(action));
+ assert.match(read('app/page.tsx'),/RitualsPanel workspaceId=/);
+});
