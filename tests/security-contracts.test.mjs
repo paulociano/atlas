@@ -253,3 +253,5 @@ test('Sprint 6 uploader ownership and downloaded-byte verification',()=>{
  assert.match(ui,/\.download\(path\)/);
  assert.match(ui,/verified!==hash/);
 });
+
+test('document version choices are loaded by filename from the server',()=>{const ui=read('components/documents-panel.tsx');assert.match(ui,/\.eq\('original_name',f\.name\)/);assert.match(ui,/setVersionCandidates\(data\|\|\[\]\)/);assert.match(ui,/versionCandidates\.map/);});
