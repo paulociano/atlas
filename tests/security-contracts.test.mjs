@@ -176,3 +176,12 @@ test('Sprint 5 accessibility and live unread badge',()=>{
  assert.match(page,/window\.addEventListener\('focus',onFocus\)/);
  assert.match(read('supabase/migrations/20261009_sprint5_notifications_realtime.sql'),/alter publication supabase_realtime add table public\.notifications/);
 });
+
+test('dashboard counts use exact database counts instead of 500-entry preview',()=>{
+ const hook=read('lib/use-workspace-counts.ts');
+ const page=read('app/page.tsx');
+ assert.match(hook,/count:'exact',head:true/);
+ assert.match(hook,/\.in\('kind',\['decisao','regra','conduta'\]\)/);
+ assert.match(page,/workspaceCounts\?\.records/);
+ assert.match(page,/workspaceCounts\?\.openTasks/);
+});
