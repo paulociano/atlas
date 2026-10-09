@@ -24,8 +24,8 @@ jobs:
       - run: npm install
       - run: npm run lint && npm test && npm run build
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: https://nblhmcnqytcbndatrgtd.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: sb_publishable_CJWfQ_z3-N_ohYndRV1sxQ_26ZlD2Bn
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
