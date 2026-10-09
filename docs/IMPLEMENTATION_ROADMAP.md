@@ -26,10 +26,10 @@ Fonte de verdade do código: este repositório. Fonte de verdade dos dados: Supa
 - [ ] Testes E2E reais de identidade, primeira organização e permissões em homologação separada (dependência para homologar a Sprint 2).
 
 ## Sprint 3 — Decisões e execução (P1)
-- [~] Tarefas agora vinculam opcionalmente a decisão ou reunião por FK com validação do workspace; links profundos ainda pendentes.
-- [~] Responsável e prioridade implementados; status granular, revisão e comentários ainda pendentes.
-- [ ] Aprovação/versionamento completos, gestão de vigência e política de arquivamento.
-- [ ] Abrir entidade exata na auditoria e nos avisos.
+- [x] Tarefas vinculadas a decisão/reunião por FK com validação por workspace e navegação direta ao registro.
+- [x] Responsável, prioridade, status granular e comentários de tarefa; revisões de mudanças registradas em audit_events.
+- [x] Aprovação e versionamento existentes, arquivamento administrativo de registros vigentes implementado e auditado. Política de retenção institucional detalhada será tratada em governança/compliance.
+- [x] Navegação para entidade exata de tarefas e registros a partir de auditoria/avisos, quando ainda existir e estiver carregada.
 
 ## Sprint 4 — Treinamentos, reuniões e feedbacks (P1)
 - [ ] Atas com pauta, participantes, decisões e encaminhamentos.
@@ -62,3 +62,6 @@ Mudança integrada ao GitHub, migration aplicada quando necessária, testes adeq
 
 ## Status de homologação sem custos adicionais
 A implementação funcional da Sprint 2 está entregue. Auditoria SQL read-only de cinco controles foi aprovada no Supabase ativo. Testes E2E autenticados com contas independentes e ambiente isolado seguem pendentes por decisão de não provisionar branch paga. Não tratar a Sprint 2 como homologada até concluir esse gate.
+
+## Sprint 3 — Nota de aceite
+Entregas funcionais implantadas em código e migrations. Os contratos automatizados e o build são o gate mínimo; E2E multiusuário em homologação segue pendente devido à opção de não criar ambiente pago. Navegação profunda ocorre dentro da sessão da aplicação (não é URL compartilhável). Comentários são append-only para colaboradores com permissão de edição. Arquivamento não apaga versões ou logs.
