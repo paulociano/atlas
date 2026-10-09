@@ -38,8 +38,8 @@ Fonte de verdade do código: este repositório. Fonte de verdade dos dados: Supa
 
 ## Sprint 5 — Pesquisa, notificações e UX (P1)
 - [~] Listagem principal de registros com filtros e paginação no servidor (30 por página); resumos, relações e outros módulos ainda utilizam carga local limitada de até 500 entradas.
-- [~] Painel de notificações atualiza em foco e tenta assinar eventos Realtime; reconciliação de permissões existe no RPC, mas Realtime depende da configuração de publicação do Supabase.
-- [~] Estados de carregamento e erro adicionados à busca; acessibilidade, mobile e qualidade web.
+- [~] Painel de notificações atualiza em foco e tenta assinar eventos Realtime; reconciliação de permissões existe no RPC e a publicação Realtime da tabela notifications foi habilitada e verificada.
+- [~] Estados de carregamento/erro adicionados à busca, layout mobile/foco e movimento reduzido aprimorados; auditoria E2E de acessibilidade e qualidade web.
 - [ ] Quebrar app/page.tsx em módulos com state e data access dedicados.
 
 ## Sprint 6 — Documentos e memória (P1)
@@ -70,4 +70,4 @@ Entregas funcionais implantadas em código e migrations. Os contratos automatiza
 O registro estruturado e os controles foram implementados, mas a taxa de presença usa apenas os participantes cadastrados, não uma lista formal de convocados. A privacidade aplica-se à nova tabela private_feedback e não retroage para entradas legadas do tipo feedback. Testes multiusuário autenticados seguem não executados por ausência de homologação isolada, sem custo adicional autorizado.
 
 ## Sprint 5 — Registro técnico
-A consulta principal de registros usa contagem exata e páginas de 30 resultados, com filtro de categoria no banco e busca por título/corpo. O painel de notificações reconcilia via RPC ao carregar e ao voltar o foco, e tenta receber alterações via Supabase Realtime. A disponibilidade de eventos depende da configuração do serviço e da publicação da tabela. A aplicação ainda usa um resumo local limitado a 500 registros para visão geral e relacionamentos; essa dependência deverá ser removida antes de declarar o requisito global de ausência de truncamento como cumprido. Testes E2E sem ambiente isolado continuam pendentes.
+A consulta principal de registros usa contagem exata e páginas de 30 resultados, com filtro de categoria no banco e busca por título/corpo. O painel de notificações reconcilia via RPC ao carregar e ao voltar o foco, e tenta receber alterações via Supabase Realtime. A publicação supabase_realtime para notifications está habilitada e verificada em produção; a entrega efetiva no cliente ainda carece de teste autenticado. A aplicação ainda usa um resumo local limitado a 500 registros para visão geral e relacionamentos; essa dependência deverá ser removida antes de declarar o requisito global de ausência de truncamento como cumprido. Testes E2E sem ambiente isolado continuam pendentes.
