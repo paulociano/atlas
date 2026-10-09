@@ -4,3 +4,13 @@
 .governance-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.governance-controls{display:flex;gap:12px;align-items:stretch;margin:18px 0}.governance-controls .search{flex:1;margin:0;min-width:180px}.governance-controls select{max-width:190px}.governance-controls .secondary{display:flex;align-items:center;gap:7px;white-space:nowrap}.governance-controls button{border:1px solid #e0e5ed}.record .primary{box-shadow:none}@media(max-width:1080px){.governance-controls{flex-wrap:wrap}.governance-controls .search{flex-basis:100%}}@media(max-width:760px){.governance-stats{grid-template-columns:1fr}.governance-controls select,.governance-controls button{max-width:none;flex:1}}
 
 .profile-form{display:grid;gap:18px;max-width:690px}.profile-form label{display:grid;gap:7px;font-weight:600}.profile-form input{width:100%}.profile-form .primary{justify-self:start}
+
+/* Rolagem discreta da navegação lateral (desktop e mobile). */
+.sidebar{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:transparent transparent;scrollbar-gutter:stable}
+.sidebar:hover,.sidebar:focus-within{scrollbar-color:rgba(195,205,231,.22) transparent}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{background:transparent;border-radius:8px}
+.sidebar:hover::-webkit-scrollbar-thumb,.sidebar:focus-within::-webkit-scrollbar-thumb{background:rgba(195,205,231,.22)}
+.sidebar::-webkit-scrollbar-thumb:hover{background:rgba(195,205,231,.35)}
+@media(hover:none){.sidebar{scrollbar-width:none}.sidebar::-webkit-scrollbar{display:none}}
