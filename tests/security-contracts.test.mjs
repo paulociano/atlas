@@ -137,3 +137,15 @@ test('Sprint 4 mandatory ritual updates require administrative RPC',()=>{
  const ui=read('components/rituals-panel.tsx');
  assert.match(ui,/rpc\('set_training_required'/);
 });
+
+test('Drive-inspired ritual examples are anonymized and read-only',()=>{
+ const examples=read('lib/record-examples.ts');
+ const ui=read('components/record-examples.tsx');
+ assert.match(examples,/Duplicado/);
+ assert.match(examples,/Atrasado/);
+ assert.match(examples,/Ausente justificado/);
+ assert.match(examples,/Sem participação efetiva/);
+ assert.match(ui,/não adicionam dados ao workspace/);
+ assert.doesNotMatch(ui,/supabase\.from\(|\.insert\(/);
+ assert.match(read('components/rituals-panel.tsx'),/<RecordExamples\/>/);
+});
