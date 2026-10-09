@@ -152,8 +152,9 @@ test('Drive-inspired ritual examples are anonymized and read-only',()=>{
 
 test('Sprint 5 records use server filtering and paginated loading',()=>{
  const page=read('app/page.tsx');
- assert.match(page,/\.range\(searchPage\*30,searchPage\*30\+29\)/);
- assert.match(page,/count:'exact'/);
+ const hook=read('lib/use-workspace-record-search.ts');
+ assert.match(hook,/\.range\(page\*PAGE_SIZE,page\*PAGE_SIZE\+PAGE_SIZE-1\)/);
+ assert.match(hook,/count:'exact'/);
  assert.match(page,/searchLoading/);
  assert.match(page,/searchError/);
  assert.match(page,/setSearchPage/);
