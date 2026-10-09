@@ -34,3 +34,12 @@ test('reproducible migration files cover governance, profiles and notifications'
 
 test('version captures only creation and content or status changes',()=>{const sql=read('supabase/migrations/20261009_governance_baseline.sql');assert.match(sql,/create trigger entry_version_insert after insert/i);assert.match(sql,/create trigger entry_version_update after update of title,body,status/i);assert.doesNotMatch(sql,/create trigger entry_version_capture after insert or update/i)});
 test('production lookup indexes are versioned',()=>{const sql=read('supabase/migrations/20261009_search_and_fk_indexes.sql');assert.match(sql,/entries_search_index/);assert.match(sql,/to_tsvector\('portuguese'/);assert.match(sql,/entry_versions_workspace_idx/) });
+
+test('notification reconciliation removes approvals when admin rights are revoked',()=>{
+ const sql=read('supabase/migrations/20261009_notification_permission_reconciliation.sql');
+ assert.match(sql,/delete from public\.notifications n/i);
+ assert.match(sql,/n\.kind='approval'/i);
+ assert.match(sql,/m\.role in \('owner','admin'\)/i);
+ assert.match(sql,/n\.user_id=\(select auth\.uid\(\)\)/i);
+ assert.match(sql,/e\.workspace_id=target_workspace/i);
+});
