@@ -88,3 +88,15 @@ test('attendance links only to workspace members without losing external partici
 });
 
 test('read-only production metadata audit covers Sprint 2 security gates',()=>{const sql=read('supabase/tests/security_metadata_audit.sql');assert.match(sql,/pg_policies/);assert.match(sql,/has_function_privilege/);assert.match(sql,/email_confirmed_at/);assert.match(sql,/column_privileges/);assert.doesNotMatch(sql,/\b(insert|update|delete|drop|alter|truncate|create)\s+(?:table|into|from|public\.)/i)});
+
+test('Sprint 3 tasks validate source and assignee within same workspace',()=>{
+ const sql=read('supabase/migrations/20261009_sprint3_task_links_priority.sql');
+ assert.match(sql,/e\.workspace_id=new\.workspace_id/);
+ assert.match(sql,/m\.workspace_id=new\.workspace_id/);
+ assert.match(sql,/e\.kind in \('decisao','reuniao'\)/);
+ assert.match(sql,/tasks_priority_check/);
+ const page=read('app/page.tsx');
+ assert.match(page,/source_entry_id:taskSource\|\|null/);
+ assert.match(page,/assignee_user_id:taskAssignee\|\|null/);
+ assert.match(page,/priority:taskPriority/);
+});
