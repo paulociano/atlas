@@ -128,3 +128,12 @@ test('Sprint 4 private feedback, meeting minutes and attendance contracts',()=>{
  for(const action of ['meeting_minutes','private_feedback','attendance','mandatory_training']) assert.match(ui,new RegExp(action));
  assert.match(read('app/page.tsx'),/RitualsPanel workspaceId=/);
 });
+
+test('Sprint 4 mandatory ritual updates require administrative RPC',()=>{
+ const sql=read('supabase/migrations/20261009_sprint4_attendance_update_required.sql');
+ assert.match(sql,/role in \('owner','admin'\)/);
+ assert.match(sql,/public\.can_edit\(workspace_id\)/);
+ assert.match(sql,/function public\.set_training_required/);
+ const ui=read('components/rituals-panel.tsx');
+ assert.match(ui,/rpc\('set_training_required'/);
+});
