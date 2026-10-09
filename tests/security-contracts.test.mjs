@@ -207,3 +207,19 @@ test('workspace switch ignores stale responses from prior workspace',()=>{
  assert.match(hook,/latestWorkspace\.current=workspaceId/);
  assert.match(hook,/if\(id!==latestWorkspace\.current\)return/);
 });
+
+test('Sprint 6 private storage, read-only metadata, preview and consent',()=>{
+ const sql=read('supabase/migrations/20261009_sprint6_private_attachments.sql');
+ assert.match(sql,/atlas-private/);
+ assert.match(sql,/public=false/);
+ assert.match(sql,/file_size_limit=5242880/);
+ assert.match(sql,/public\.has_membership\(workspace_id\)/);
+ assert.match(sql,/public\.can_edit\(workspace_id\)/);
+ assert.match(sql,/workspace_id=new\.workspace_id/);
+ const ui=read('components/documents-panel.tsx');
+ assert.match(ui,/crypto\.subtle\.digest\('SHA-256'/);
+ assert.match(ui,/setConsent/);
+ assert.match(ui,/createSignedUrl/);
+ assert.match(ui,/\.upload\(/);
+ assert.match(read('app/page.tsx'),/DocumentsPanel workspaceId=/);
+});
