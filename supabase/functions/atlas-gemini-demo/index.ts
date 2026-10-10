@@ -6,7 +6,7 @@ const cases={
  reuniao:{question:"Quais encaminhamentos constam na reunião fictícia?",sourceId:"DEMO-ATA-001",sourceTitle:"Ata fictícia de planejamento",sourceText:"Uma equipe fictícia definiu que Clara entregará um cronograma revisado na segunda-feira."},
  treinamento:{question:"Qual rotina foi definida no treinamento fictício?",sourceId:"DEMO-TREINO-002",sourceTitle:"Treinamento de exemplo",sourceText:"O treinamento fictício decidiu estabelecer uma revisão semanal do conteúdo."}
 } as const;
-const headers={"Content-Type":"application/json","Cache-Control":"no-store","Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"authorization,apikey,content-type"};
+const headers={"Content-Type":"application/json","Cache-Control":"no-store","Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"authorization,apikey,content-type,x-client-info,x-supabase-api-version"};
 function reply(body:unknown,status=200){return Response.json(body,{status,headers})}
 Deno.serve(async(req:Request)=>{
  if(req.method==="OPTIONS")return new Response(null,{headers,status:204});
