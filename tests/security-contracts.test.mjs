@@ -304,3 +304,5 @@ test('Gemini lab uses only synthetic scenarios with no external calls',()=>{
 test('Gemini Edge Function accepts Supabase browser preflight headers',()=>{const fn=read('supabase/functions/atlas-gemini-demo/index.ts');assert.match(fn,/x-client-info/);assert.match(fn,/x-supabase-api-version/);});
 
 test('Gemini POST is permitted by preflight',()=>{assert.match(read('supabase/functions/atlas-gemini-demo/index.ts'),/Access-Control-Allow-Methods/);});
+
+test('Gemini distinguishes upstream provider errors without leaking API key',()=>{const fn=read('supabase/functions/atlas-gemini-demo/index.ts');const adapter=read('supabase/functions/atlas-gemini-demo/gemini-client.ts');assert.match(fn,/GeminiProviderError/);assert.match(fn,/messages\[code\]/);assert.match(adapter,/res\.status===429/);assert.match(adapter,/res\.status===404/);});
