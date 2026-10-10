@@ -12,7 +12,7 @@ export default function GeminiDemo(){
   if(!supabase)return;
   setLoading(true);setError('');setResult(null);
   const {data,error}=await supabase.functions.invoke('atlas-gemini-demo',{body:{scenario,mode}});
-  if(error)setError('A demonstração não pôde ser executada. Verifique a sessão e tente novamente.');
+  if(error){const response=(error as {context?:Response}).context;let detail='';if(response&&typeof response.json==='function'){try{const payload=await response.json();detail=typeof payload?.error==='string'?payload.error:''}catch{}}setError(detail||('Falha na conexão com a função: '+error.message));}
   else if((mode==='demo'&&(data?.mode!=='synthetic-demo'||data.externalCall!==false))||(mode==='real'&&(data?.mode!=='gemini-real-synthetic'||data.externalCall!==true)))setError('Resposta inesperada ou modo real não habilitado. Configure os secrets no Supabase.');
   else setResult(data as Demo);
   setLoading(false);
