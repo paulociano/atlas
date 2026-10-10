@@ -1,6 +1,6 @@
-// Adaptador preparado para ativação futura exclusivamente com chave de API
-// confirmada no nível gratuito. Este módulo NÃO é importado pela função
-// publicada atlas-gemini-demo; não realiza chamadas ao ser apenas versionado.
+// Adaptador utilizado somente no modo real explicitamente autorizado.
+// Recebe exclusivamente fontes sintéticas DEMO e mantém a chave no servidor.
+export class GeminiProviderError extends Error {constructor(public code:string,public status:number){super(code)}}
 type SyntheticPrompt={question:string;sourceId:string;sourceTitle:string;sourceText:string};
 export async function generateFromSyntheticSources(input:SyntheticPrompt,apiKey:string){
  if(!apiKey)throw new Error('Chave Gemini não configurada');
@@ -16,10 +16,10 @@ export async function generateFromSyntheticSources(input:SyntheticPrompt,apiKey:
     generationConfig:{temperature:0,maxOutputTokens:240}
    })
   });
-  if(!res.ok)throw new Error('Gemini indisponível ('+res.status+')');
+  if(!res.ok){const code=res.status===429?'QUOTA':res.status===401||res.status===403?'AUTH':res.status===404?'MODEL':res.status===400?'REQUEST':res.status>=500?'PROVIDER':'OTHER';throw new GeminiProviderError(code,res.status)}
   const data=await res.json();
   const answer=data?.candidates?.[0]?.content?.parts?.map((p:{text?:string})=>p.text||'').join('').trim();
-  if(!answer)throw new Error('Resposta vazia');
+  if(!answer)throw new GeminiProviderError('EMPTY',502);
   return {answer,citations:[{id:input.sourceId,title:input.sourceTitle}]};
  }finally{clearTimeout(timer)}
 }
