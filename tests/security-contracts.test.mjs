@@ -300,3 +300,5 @@ test('Gemini lab uses only synthetic scenarios with no external calls',()=>{
  assert.match(adapter,/sourceId\.startsWith\('DEMO-'\)/);
  assert.match(read('app/page.tsx'),/<GeminiDemo\/>/);
 });
+
+test('Gemini Edge Function accepts Supabase browser preflight headers',()=>{const fn=read('supabase/functions/atlas-gemini-demo/index.ts');assert.match(fn,/x-client-info/);assert.match(fn,/x-supabase-api-version/);});
