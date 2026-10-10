@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import {createClient} from "npm:@supabase/supabase-js@2";
-import {generateFromSyntheticSources} from "./gemini-client.ts";
+import {generateFromSyntheticSources,GeminiProviderError} from "./gemini-client.ts";
 
 const cases={
  reuniao:{question:"Quais encaminhamentos constam na reunião fictícia?",sourceId:"DEMO-ATA-001",sourceTitle:"Ata fictícia de planejamento",sourceText:"Uma equipe fictícia definiu que Clara entregará um cronograma revisado na segunda-feira."},
@@ -33,5 +33,5 @@ Deno.serve(async(req:Request)=>{
  try{
   const result=await generateFromSyntheticSources(item,apiKey);
   return reply({mode:"gemini-real-synthetic",provider:"gemini-2.5-flash-lite",externalCall:true,question:item.question,...result});
- }catch{return reply({error:"Gemini indisponível ou quota gratuita esgotada. Nenhum dado real foi enviado."},502)}
+ }catch(err){const code=err instanceof GeminiProviderError?err.code:err instanceof DOMException&&err.name==="AbortError"?"TIMEOUT":"UNKNOWN";const messages:Record<string,string>={QUOTA:"Quota do Gemini esgotada ou indisponível para este projeto gratuito.",AUTH:"Chave de API sem autorização para este projeto ou modelo.",MODEL:"Modelo gemini-2.5-flash-lite não disponível para esta chave.",REQUEST:"Requisição rejeitada pelo provedor. Confira a disponibilidade do modelo.",PROVIDER:"Serviço Gemini temporariamente indisponível.",EMPTY:"Gemini não retornou texto nesta tentativa.",TIMEOUT:"Tempo limite de resposta do Gemini excedido.",UNKNOWN:"Falha de comunicação com o Gemini."};console.error("atlas-gemini-demo upstream failure",code);return reply({error:messages[code]||messages.UNKNOWN,code},502)}
 });
